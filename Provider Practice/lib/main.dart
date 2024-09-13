@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_provider_basics/secondExample.dart';
+import 'package:flutter_provider_basics/darktheme.dart';
 import 'package:flutter_provider_basics/Provider/count_provider.dart';
-import 'package:flutter_provider_basics/count_example.dart';
 import 'package:flutter_provider_basics/slider_provider.dart';
+import 'package:flutter_provider_basics/theme_changer_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -17,17 +17,24 @@ class myApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            // Single Provider
             create: (_) => CountProvider(),
           ),
           ChangeNotifierProvider(
-            // Single Provider
             create: (_) => SliderProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (_) => ThemeChanger(),
+          ),
         ],
-        child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: second(),
-        ));
+        child: Builder(builder: (BuildContext context) {
+          final themechange = Provider.of<ThemeChanger>(context);
+          return MaterialApp(
+            themeMode: themechange.themeMode,
+            theme: ThemeData(brightness: Brightness.light),
+            darkTheme: ThemeData(brightness: Brightness.dark),
+            debugShowCheckedModeBanner: false,
+            home: const Darktheme(),
+          );
+        }));
   }
 }
